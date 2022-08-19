@@ -55,6 +55,7 @@ ENV CONFIG "\
         --add-module=modules/ngx_http_upstream_check_module \
         --add-module=modules/headers-more-nginx-module-0.33 \
 	--add-module=modules/ngx_http_upstream_session_sticky_module \
+        --add-module=modules/nginx-module-vts \
         "
 RUN     addgroup -S nginx \
         && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
@@ -70,6 +71,7 @@ RUN     addgroup -S nginx \
                 curl \
                 libxslt-dev \
                 gd-dev \
+                git \
                 geoip-dev \
         && curl -L "https://github.com/alibaba/tengine/archive/$TENGINE_VERSION.tar.gz" -o tengine.tar.gz \
         && mkdir -p /usr/src \
@@ -78,6 +80,7 @@ RUN     addgroup -S nginx \
         && cd /usr/src/tengine-$TENGINE_VERSION \
         && curl -L "https://github.com/openresty/headers-more-nginx-module/archive/v0.33.tar.gz" -o more.tar.gz \
         && tar -zxC /usr/src/tengine-$TENGINE_VERSION/modules -f more.tar.gz \
+        && git clone "https://github.com/vozlt/nginx-module-vts.git" /usr/src/tengine-$TENGINE_VERSION/modules/nginx-module-vts \
 	&& rm  more.tar.gz \
 	&& ls -l /usr/src/tengine-$TENGINE_VERSION/modules \
 	&& ./configure $CONFIG --with-debug \
