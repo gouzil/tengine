@@ -21,3 +21,18 @@ docker exec -it -d -v example.com.conf:/etc/nginx/conf.d/example.com.conf \
 
 [example of conf see on github](https://github.com/Axizdkr/tengine)
 
+
+## add nginx-module-vts
+
+Modify the file `/etc/nginx/nginx.conf` Make it directly access through the IP
+```bash
+    vhost_traffic_status_zone;
+    server {
+        listen 80;
+        server_name 192.168.0.123;
+        location /status {
+            vhost_traffic_status_display;
+            vhost_traffic_status_display_format html;
+        }
+    }
+```
